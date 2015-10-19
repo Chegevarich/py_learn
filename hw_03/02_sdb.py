@@ -28,17 +28,24 @@ def insert_into_db(raw_brand):
 	auto = tuple()
 
 	if raw_brand == '':
-		raw_brand = input('введите марку')
+		raw_brand = input('введите марку : ')
 
-		if raw_brand not in data['raw_brands']:
-			data['raw_brands'].append(raw_brand)
-			renew_pickle()
-			insert_into_db(raw_brand)
+		if raw_brand == 'выход':
+			return False
+
+		if raw_brand.isalpha():
+			if raw_brand not in data['raw_brands']:
+				data['raw_brands'].append(raw_brand)
+				renew_pickle()
+				insert_into_db(raw_brand)
+		else : 
+			print('марка должна содержать только буквы')
+			insert_into_db('')
 	else :
 	#brand есть - идём дальше 
 		brand = data['raw_brands'].index(raw_brand)
 		#получаем мощность
-		power = input('введите мощность')
+		power = input('введите мощность : ')
 
 		#если ввели не цифры - выходим - перезапускаем
 		if not power.isnumeric:
@@ -59,10 +66,9 @@ def insert_into_db(raw_brand):
 
 def read_from_db(sort_by):
 	#x = input('')
-	global data
 	text = 'марка - {brand}, мощность - {power}'
 
-	for i in sorted(data['auto']):
+	for i in sorted(data['auto'], key=lambda x:data['raw_brands'][x[0]]):
 		print(text.format(brand=data['raw_brands'][i[0]], power=i[1]))
 
 
@@ -89,7 +95,7 @@ while True:
 # 
 # Пользователь вводит команду: ввести, вывести +
 # - Ввести - пользователь вводит марку автомобиля и его мощность. +
-# Необходимо проверить, что марка состоит только из букв латинского или русского алфавитов. 
+# Необходимо проверить, что марка состоит только из букв латинского или русского алфавитов. +
 # Мощность только из цифр. +
 # 
 # - Вывести - выводятся все автомобили - по алфавиту. 
