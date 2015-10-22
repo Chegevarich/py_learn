@@ -13,7 +13,7 @@ def read_pickle_object():
 		f = open(file_name, 'w')
 		data = {
 		'raw_brands' : [],
-		'auto' : set()
+		'auto_type' : set()
 		}
 		f = open(file_name, 'wb')
 		pickle.dump(data, f)
@@ -23,8 +23,8 @@ def read_pickle_object():
 		 	data = pickle.load(f)
 
 
-#вставить новую запись в БД 
-def insert_into_db(raw_brand):
+#вставить новую запись о новом типе в БД 
+def insert_auto_type_into_db(raw_brand):
 	global data
 
 	brand = 0
@@ -46,15 +46,15 @@ def insert_into_db(raw_brand):
 				data['raw_brands'].append(raw_brand)
 				#обновляем объект
 				renew_pickle()
-				insert_into_db(raw_brand)
+				insert_auto_type_into_db(raw_brand)
 			#если бренд подобный уже был - перезапускаем функцию с заполненным брендом
 			else:
-				insert_into_db(raw_brand)
+				insert_auto_type_into_db(raw_brand)
 
 		else : 
 			#исключение - перезапуск функции
 			print_error_message(3)
-			insert_into_db('')
+			insert_auto_type_into_db('')
 	else :
 	#brand есть - идём дальше 
 		brand = data['raw_brands'].index(raw_brand)
@@ -64,20 +64,20 @@ def insert_into_db(raw_brand):
 		#если ввели не цифры - выходим - перезапускаем
 		if not power.isnumeric:
 			print_error_message(5)
-			insert_into_db(raw_brand)		
+			insert_auto_type_into_db(raw_brand)		
 		else:
 			#если новообразованный сет имеет разницу с текущим - добавляем его
-			if not data['auto'] or not data['auto'].intersection( { tuple([brand, int(power)], ) } ):
-			#if not data['auto'] or data['auto'].difference( { tuple([brand, int(power)], ) } ):
+			if not data['auto_type'] or not data['auto_type'].intersection( { tuple([brand, int(power)], ) } ):
+			#if not data['auto_type'] or data['auto_type'].difference( { tuple([brand, int(power)], ) } ):
 				print('новый авто добавлен')
-				data['auto'].add( tuple( [brand, int(power)]) )
+				data['auto_type'].add( tuple( [brand, int(power)]) )
 				renew_pickle()
 			else:
 				print_error_message(6)
 
 
 def read_from_db(sort_by):
-	for i in sorted(data['auto'], key=lambda x:data['raw_brands'][x[0]]):
+	for i in sorted(data['auto_type'], key=lambda x:data['raw_brands'][x[0]]):
 		print(text_template_01.format(brand=data['raw_brands'][i[0]], power=i[1]))
 
 def print_templ_01(brand, power):
@@ -91,7 +91,7 @@ def renew_pickle():
 	f.close()
 
 def search_by_power(power):
-	for i in data['auto']:
+	for i in data['auto_type']:
 		if str(i[1]) == power:
 			print_templ_01(i[0], i[1])
 
@@ -100,12 +100,12 @@ def search_by_section_of_power(from_power, to_power):
 	if from_power>to_power:
 		from_power, to_power = to_power, from_power
 
-	for i in data['auto']:
+	for i in data['auto_type']:
 		if from_power <= int(i[1]) <= to_power:
 			print_templ_01(i[0], i[1])
 
 def search_by_name(brand):
-	for i in data['auto']:
+	for i in data['auto_type']:
 		if data['raw_brands'][i[0]]==brand:
 			print_templ_01(i[0], i[1])
 
@@ -143,8 +143,15 @@ def search_by(s_by):
 		print_error_message(2)
 		search_by('')
 
+def take_auto_by_num():
+	pass
+
+def insert_auto_into_db():
+	pass
+
+
 def print_error_message(type_of_error=0):
-	error_list = ["произошла ошибка",
+	error_list = ["произошла ошибка не прошедшая типизацию (всё не очень хорошо)",
 		"введена не буквенная марка автомобиля - требуется ввести марку состоящую из букв",
 		"выбран не существующий режим, введите корректный режим",
 		"марка должна содержать только буквы",
@@ -161,30 +168,30 @@ def take_false(void):
 
 #так как хранилище реализовано через не изменяемый тип данных - set 
 #воспринимаем редактирование как удаление и добавление
-def edit_auto(id):
-	delete_auto(id)
-	insert_into_db('')
+def edit_auto_type(id):
+	delete_auto_type(id)
+	insert_auto_type_into_db('')
 
-def delete_auto(id):
-	data['auto'].remove(id)
+def delete_auto_type(id):
+	data['auto_type'].remove(id)
 	renew_pickle()
 
 #фукнция выбора действия с записью
-def edit(void):
+def edit_auto_type_controller(void):
 	tmp_list = []
 	do = {
-		'редактировать' : edit_auto,
-		'удалить' : delete_auto
+		'редактировать' : edit_auto_type,
+		'удалить' : delete_auto_type
 	}
 
-	for key, val in enumerate((data['auto'])):
+	for key, val in enumerate((data['auto_type'])):
 		print(key, data['raw_brands'][val[0]], val[1])
 		tmp_list.append(val)
 	x = input('введите идентификатор записи для редактирования >>> ')
 
 	if x.isnumeric():
 		x = int(x)
-		if x > (len(data['auto'])-1):
+		if x > (len(data['auto_type'])-1):
 			print_error_message(8)
 		else:
 			d = input('введите желаемое действие (редактировать или удалить) >>> ')
@@ -196,26 +203,31 @@ def edit(void):
 
 def take_command():
 	FUNCS = {
-	'ввести' : insert_into_db,
+	'ввести' : insert_auto_type_into_db,
 	'вывести' : read_from_db,
 	'поиск' : search_by,
-	'редактировать' : edit
+	'редактировать' : edit_auto_type_controller
 	}
 
 	while True:
+		#трассировочный вывод данных
 		print(data)
 
 		print('Возможные действия')
+		#выводим ключи из массива возможных функций
 		for i in FUNCS:
 			print('\t', i)
 
-		x = input('>>> ')
-		if x in FUNCS:
-			FUNCS[x]('')
-		elif x == 'выход':
-			return False
-		else:
-			print_error_message(7)
+		try:
+			x = input('>>> ')
+			if x in FUNCS:
+				FUNCS[x]('')
+			elif x == 'выход':
+				return False
+			else:
+				print_error_message(7)
+		except:
+			print_error_message()
 
 #читаем (в случае отсутствия данных - создаём) pickle объект
 read_pickle_object()
@@ -249,9 +261,14 @@ FUNCS = {
 а также "Удалить". +
 Как с помощью функций сократить программный код в этом случае? +
 
-* 4. А теперь вводим в программу логистику. У каждого автомобиля из предыдущей задачи теперь есть номерной знак ('o007py' например) и координаты - x и y на плоскости относительно автобазы.
+* 4. А теперь вводим в программу логистику. 
+У каждого автомобиля из предыдущей задачи теперь есть номерной знак
+ ('o007py' например) и 
+ координаты - x и y на плоскости относительно автобазы.
 
-пользователь теперь может также выбрать автомобиль по номерному знаку и переместить его в другие координаты.
+пользователь теперь может также выбрать 
+автомобиль по номерному знаку и
+ переместить его в другие координаты.
 
 * 5. При этом поставить 2 автомобиля в одинаковые координаты система не позволяет.
 
