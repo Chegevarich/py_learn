@@ -5,8 +5,6 @@ f.write('')
 f.close()		
 a = ''
 
-print(globals())
-
 while a=='':
 	time.sleep(1)
 	print(0)
