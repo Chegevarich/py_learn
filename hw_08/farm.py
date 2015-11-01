@@ -83,6 +83,29 @@ class Cow(Animal):
 class Farm:
 	last_step = 0
 
+	who_is_who = {
+	'duck' : 'собаки',
+	'cow' : 'коровы',
+	'duck' : 'утки',
+	}
+
+
+	def append_animal(self, animal_type='утки', main_product=None, main_product_coefficent=None, main_product_unit=None, speed=None, travel_time_per_day=None):
+		if animal_type in ['утки', 'собаки', 'коровы']:
+			if animal_type == 'собаки':
+				self.dogs.append(Dog())
+			elif animal_type == 'коровы':
+				self.cows.append(Cow())
+			else :
+				self.ducks.append(Duck())
+
+		else:
+			if (main_product and main_product_coefficent and main_product_unit and speed and travel_time_per_day):
+				if animal_type not in self.animals:
+					self.animals[animal_type] = []
+
+				self.animals[animal_type].append(Animal(main_product, main_product_coefficent, main_product_unit, speed=0, travel_time_per_day=0))
+
 	def __init__(self, ducks=0, dogs=0, cows=0 ):
 
 		create_dogs = ceil(random()*10)
@@ -141,19 +164,23 @@ class Farm:
 		print('===Начало отчёта===')
 		for animal_type in self.animals.keys():
 
-			total = 0
-			print(animal_type)
+			if len(self.animals[animal_type]) > 0:
+				total = 0
+				print(animal_type)
 
-			for a in self.animals[animal_type]:
-				print ('\tпроизвели ', a.main_product, 'в количестве', a.goods_ready, a.main_product_unit)
-				print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.goods_in_last_month)
-				print('\tпробежал', a.distance_traveled, 'км')
-				print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.distance_traveled_in_last_moth)
-				print('\tподавал голос', a.voice_used, 'раз(а) за период')
-				print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.voice_in_last_moth)				
-				total += a.goods_ready
+				for i, a in enumerate(self.animals[animal_type]):
+					print('=============================================================================')
+					print('Животное номер', i+1)
+					print ('\tпроизвели ', a.main_product, 'в количестве', a.goods_ready, a.main_product_unit)
+					print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.goods_in_last_month)
+					print('\tпробежал', a.distance_traveled, 'км')
+					print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.distance_traveled_in_last_moth)
+					print('\tподавал голос', a.voice_used, 'раз(а) за период')
+					print('\t\tв том числе за последний(е)', self.last_step, 'месяц', a.voice_in_last_moth)				
+					print('=============================================================================')
+					total += a.goods_ready
 
-			print('\t', animal_type, 'всего произвели', total, a.main_product_unit, 'продукта', a.main_product, 'за', a.total_moth_in_own, 'месяца на ферме')
+				print('\t', animal_type, 'всего произвели', total, a.main_product_unit, 'продукта', a.main_product, 'за', a.total_moth_in_own, 'месяца на ферме')
 
 		print('===Конец отчёта==\n')
 
@@ -170,6 +197,9 @@ if __name__ == '__main__':
 	#выводим репорт с первым шагом (1 месяцев прошёл)
 	farm.report()
 
+	farm.append_animal()
+	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
+	
 	farm.next_month()
 	#выводим репорт со вторым шагом (2 месяцев прошёл)
 	farm.report()	
