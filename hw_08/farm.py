@@ -83,13 +83,6 @@ class Cow(Animal):
 class Farm:
 	last_step = 0
 
-	who_is_who = {
-	'duck' : 'собаки',
-	'cow' : 'коровы',
-	'duck' : 'утки',
-	}
-
-
 	def append_animal(self, animal_type='утки', main_product=None, main_product_coefficent=None, main_product_unit=None, speed=None, travel_time_per_day=None):
 		if animal_type in ['утки', 'собаки', 'коровы']:
 			if animal_type == 'собаки':
@@ -198,6 +191,7 @@ if __name__ == '__main__':
 	farm.report()
 
 	farm.append_animal()
+	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 	
 	farm.next_month()
