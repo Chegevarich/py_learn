@@ -1,10 +1,22 @@
 # coding:utf-8
 from math import ceil
 from random import random
+from abstract_animal import SuperAnimal
+from abstract_farm import SuperFarm
 
-class Animal:
+class Animal(SuperAnimal):
+	def __str__(self):
+		return(self.about_animal)
 
-	def __init__(self, main_product, main_product_coefficent, main_product_unit, speed=0, travel_time_per_day=0):
+	def __repr__(self):
+		return(self.about_animal)
+
+	@property
+	def about_animal(self):
+	    return 'из группы {}, производит {} {} {} в месяц, случайный коэффициент прошлого периода -- {}'.format( self.animal_type, self.main_product, self.main_product_coefficent, self.main_product_unit, self.goods_per_month_coefficent )
+		
+
+	def __init__(self, main_product, main_product_coefficent, main_product_unit, animal_type, speed=0, travel_time_per_day=0):
 		#attr by createon
 		self.main_product = main_product
 		self.main_product_coefficent = main_product_coefficent
@@ -12,6 +24,8 @@ class Animal:
 		self.speed = speed
 		self.travel_time_per_day = travel_time_per_day
 		self.voice_per_day = 0
+		print('animaltype=',animal_type)
+		self.animal_type = animal_type
 
 		#temporary results
 		self.goods_in_last_month = 0
@@ -56,8 +70,8 @@ class Animal:
 class Duck(Animal):
 
 	#переопределяем инит что бы передать параметры по умолчанию
-	def __init__(self, main_product='яйца', main_product_coefficent=10, main_product_unit='штук', speed=3, travel_time_per_day=10):
-		super().__init__(main_product, main_product_coefficent, main_product_unit, speed, travel_time_per_day)
+	def __init__(self, main_product='яйца', main_product_coefficent=10, main_product_unit='штук', speed=3, travel_time_per_day=10, animal_type='утки'):
+		super().__init__(main_product, main_product_coefficent, main_product_unit, animal_type, speed, travel_time_per_day)
 		self.voice_per_day = 120
 
 	#переопределяем запуск метода для получения целых количеств 
@@ -68,19 +82,19 @@ class Duck(Animal):
 class Dog(Animal):
 
 	#переопределяем инит что бы передать параметры по умолчанию
-	def __init__(self, main_product='шерсть', main_product_coefficent=1, main_product_unit='килограмм', speed=20, travel_time_per_day=18):
-		super().__init__(main_product, main_product_coefficent, main_product_unit, speed, travel_time_per_day)
+	def __init__(self, main_product='шерсть', main_product_coefficent=1, main_product_unit='килограмм', speed=20, travel_time_per_day=18, animal_type='собаки'):
+		super().__init__(main_product, main_product_coefficent, main_product_unit, animal_type, speed, travel_time_per_day)
 		self.voice_per_day = 100
 
 class Cow(Animal):
 
 	#переопределяем инит что бы передать параметры по умолчанию
-	def __init__(self, main_product='молоко', main_product_coefficent=100, main_product_unit='литров', speed=5, travel_time_per_day=8):
-		super().__init__(main_product, main_product_coefficent, main_product_unit, speed, travel_time_per_day)
+	def __init__(self, main_product='молоко', main_product_coefficent=100, main_product_unit='литров', speed=5, travel_time_per_day=8, animal_type='коровы'):
+		super().__init__(main_product, main_product_coefficent, main_product_unit, animal_type, speed, travel_time_per_day)
 		self.voice_per_day = 100
 
 
-class Farm:
+class Farm(SuperFarm):
 	last_step = 0
 
 	def append_animal(self, animal_type='утки', main_product=None, main_product_coefficent=None, main_product_unit=None, speed=None, travel_time_per_day=None):
@@ -97,7 +111,7 @@ class Farm:
 				if animal_type not in self.animals:
 					self.animals[animal_type] = []
 
-				self.animals[animal_type].append(Animal(main_product, main_product_coefficent, main_product_unit, speed=0, travel_time_per_day=0))
+				self.animals[animal_type].append(Animal(main_product, main_product_coefficent, main_product_unit, speed=0, travel_time_per_day=0, animal_type=animal_type))
 
 	def __init__(self, ducks=0, dogs=0, cows=0 ):
 
@@ -184,7 +198,7 @@ if __name__ == '__main__':
 
 	#выводим репорт с нулевым шагом (0 месяцев прошло)
 	farm.report()
-	
+#
 	#переходим в следующий месяц
 	farm.next_month()
 	#выводим репорт с первым шагом (1 месяцев прошёл)
@@ -193,7 +207,7 @@ if __name__ == '__main__':
 	farm.append_animal()
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
-	
+#
 	farm.next_month()
 	#выводим репорт со вторым шагом (2 месяцев прошёл)
 	farm.report()	
@@ -202,7 +216,20 @@ if __name__ == '__main__':
 	farm.next_month(5)
 	#выводим репорт с шагом +5 месяцев (7 месяцев прошёл)
 	farm.report()	
-	
+
+	print(farm.animals['собаки'][0])
+'''
+№9. 
+
+# 1. добавляем в ферму абстрактный класс - от 1 до 3 +
+# 2. переопределяем животным __str__ и __repr__ +
+# 3. не забыть делегирование + 
+
+# 4. * __getattr__ и __setattr__ 
+# 5. ** property у животных 
+'''
+
+
 '''
 Создаем программу-модуль "Жизнь на ферме" с набором классов:+
 - Утка +
