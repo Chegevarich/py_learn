@@ -8,10 +8,13 @@ farm = farm.Farm()
 farm.report()
 
 wwcd = {
-	'append animal' : farm.append,
+	'append animal' : farm.append_animal,
 	'next' : farm.next_month,
 	'report' : farm.report,
 }
+
+for i in wwcd:
+	print(i)
 
 while True:
 	try:

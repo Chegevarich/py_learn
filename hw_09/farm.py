@@ -204,7 +204,7 @@ if __name__ == '__main__':
 	#выводим репорт с первым шагом (1 месяцев прошёл)
 	farm.report()
 
-	farm.append_animal()
+	#farm.append_animal()
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 #
