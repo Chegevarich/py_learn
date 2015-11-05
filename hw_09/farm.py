@@ -24,7 +24,7 @@ class Animal(SuperAnimal):
 		self.speed = speed
 		self.travel_time_per_day = travel_time_per_day
 		self.voice_per_day = 0
-		print('animaltype=',animal_type)
+
 		self.animal_type = animal_type
 
 		#temporary results
@@ -97,6 +97,22 @@ class Cow(Animal):
 class Farm(SuperFarm):
 	last_step = 0
 
+	def __setattr__(self, name, value):
+		if (name == 'animal_types_count'):
+			return 'animal_types_count не может быть задан, это расчитываемое значение'
+		else:
+			super().__setattr__(name, value)
+
+	def __getattr__(self, name):
+		if name == 'animal_types_count':
+			return len(self.animals)
+		else:
+			super().__setattr__(name)
+
+
+	def duplicate_animal(self, animal_type):
+		new_animal = Animal(main_product=self.animals[animal_type][0].main_product, main_product_coefficent=self.animals[animal_type][0].main_product_coefficent, main_product_unit=self.animals[animal_type][0].main_product_unit, animal_type=self.animals[animal_type][0].animal_type, speed=self.animals[animal_type][0].speed, travel_time_per_day=self.animals[animal_type][0].travel_time_per_day)
+		
 	def append_animal(self, animal_type='утки', main_product=None, main_product_coefficent=None, main_product_unit=None, speed=None, travel_time_per_day=None):
 		if animal_type in ['утки', 'собаки', 'коровы']:
 			if animal_type == 'собаки':
@@ -105,6 +121,9 @@ class Farm(SuperFarm):
 				self.cows.append(Cow())
 			else :
 				self.ducks.append(Duck())
+
+		elif animal_type in self.animals:
+				self.animals[animal_type].append(duplicate_animal(self, animal_type))
 
 		else:
 			if (main_product and main_product_coefficent and main_product_unit and speed and travel_time_per_day):
@@ -148,6 +167,8 @@ class Farm(SuperFarm):
 			'коровы' : self.cows,
 			'утки' : self.ducks
 			}
+
+			print(self.dogs, type(self.dogs))
 
 			for i in (range(create_dogs)):
 				self.dogs.append(Dog())
@@ -204,7 +225,6 @@ if __name__ == '__main__':
 	#выводим репорт с первым шагом (1 месяцев прошёл)
 	farm.report()
 
-	#farm.append_animal()
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 	farm.append_animal(animal_type='овцы', main_product='шерсть', main_product_coefficent=0.4, main_product_unit="кг", speed=2, travel_time_per_day=8)
 #
