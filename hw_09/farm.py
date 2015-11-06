@@ -14,7 +14,6 @@ class Animal(SuperAnimal):
 	@property
 	def about_animal(self):
 	    return 'из группы {}, производит {} {} {} в месяц, случайный коэффициент прошлого периода -- {}'.format( self.animal_type, self.main_product, self.main_product_coefficent, self.main_product_unit, self.goods_per_month_coefficent )
-		
 
 	def __init__(self, main_product, main_product_coefficent, main_product_unit, animal_type, speed=0, travel_time_per_day=0):
 		#attr by createon
@@ -97,6 +96,11 @@ class Cow(Animal):
 class Farm(SuperFarm):
 	last_step = 0
 
+	@property
+	def count_of_animal_types(self):
+	    return len(self.animals)
+	
+
 	def __setattr__(self, name, value):
 		if (name == 'animal_types_count'):
 			return 'animal_types_count не может быть задан, это расчитываемое значение'
@@ -105,13 +109,14 @@ class Farm(SuperFarm):
 
 	def __getattr__(self, name):
 		if name == 'animal_types_count':
-			return len(self.animals)
+			return len(self.animals) 
 		else:
 			super().__setattr__(name)
 
 
 	def duplicate_animal(self, animal_type):
 		new_animal = Animal(main_product=self.animals[animal_type][0].main_product, main_product_coefficent=self.animals[animal_type][0].main_product_coefficent, main_product_unit=self.animals[animal_type][0].main_product_unit, animal_type=self.animals[animal_type][0].animal_type, speed=self.animals[animal_type][0].speed, travel_time_per_day=self.animals[animal_type][0].travel_time_per_day)
+		return new_animal
 		
 	def append_animal(self, animal_type='утки', main_product=None, main_product_coefficent=None, main_product_unit=None, speed=None, travel_time_per_day=None):
 		if animal_type in ['утки', 'собаки', 'коровы']:
@@ -123,7 +128,7 @@ class Farm(SuperFarm):
 				self.ducks.append(Duck())
 
 		elif animal_type in self.animals:
-				self.animals[animal_type].append(duplicate_animal(self, animal_type))
+				self.animals[animal_type].append(self.duplicate_animal(animal_type=animal_type))
 
 		else:
 			if (main_product and main_product_coefficent and main_product_unit and speed and travel_time_per_day):
@@ -186,6 +191,7 @@ class Farm(SuperFarm):
 		for animal_type in self.animals.keys():
 			for a in self.animals[animal_type]:
 				a.make_animal_affairs(month)
+		#TODO goods to warehouse
 
 	#своднаяИнформация
 	def report(self):
@@ -194,7 +200,7 @@ class Farm(SuperFarm):
 
 			if len(self.animals[animal_type]) > 0:
 				total = 0
-				print(animal_type)
+				print('==================',animal_type,'==================')
 
 				for i, a in enumerate(self.animals[animal_type]):
 					print('=============================================================================')

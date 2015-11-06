@@ -7,15 +7,23 @@ farm = Farm()
 
 farm.report()
 
+def print_module_menu():
+	print('возможные действия')
+	for i in wwcd:
+		print('\t',i)
+
 wwcd = {
 	'append animal' : farm.append_animal,
 	'next' : farm.next_month,
 	'report' : farm.report,
+	'menu' : print_module_menu,
+	'animal types count' : None,
+
 }
 
-print('возможные действия')
-for i in wwcd:
-	print('\t',i)
+
+
+print_module_menu()
 
 while True:
 	try:
@@ -30,10 +38,8 @@ while True:
 				wwcd[x](y)
 			except:
 				print('введён не корректный шаг (количество месяцев) >> ')
-			finally:
-				print(y, wwcd[x])
 
-		elif x == 'report':
+		elif x == 'report' or x == 'menu':
 			wwcd[x]()
 		elif x ==  'append animal':
 			y = input('введите тип животных (например утки, коровы) >> ')
@@ -53,12 +59,10 @@ while True:
 				except:
 					print('введены не корректные данные, животное не будет добавлено')
 				#
-
+		elif x == 'animal types count':
+			print(farm.count_of_animal_types)
 		else:
 			print('действие не определено')
 
-	if x == 'eval':
-		eval(input('жги >> '))
-
-	if x == 1:
+	if x == '1':
 		break
