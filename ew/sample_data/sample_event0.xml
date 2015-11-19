@@ -24,7 +24,7 @@
             <coord lng='11' lnt='11' time='1447783900'/>
         </unit>            
         <unit unit_code='another'>
-            <coord lng='11' lnt='11' time='1447783306'/>
+            <coord lng='11' lnt='11' time='1447783302'/>
             <coord lng='11' lnt='11' time='1447783311'/>        
             <coord lng='11' lnt='11' time='1447783315'/>
             <coord lng='11' lnt='11' time='1447783320'/>
@@ -48,7 +48,7 @@
             <coord lng='11' lnt='11' time='1447783900'/>
         </unit>
         <unit unit_code='secound'>
-            <coord lng='11' lnt='11' time='1447783306'/>
+            <coord lng='11' lnt='11' time='1447783301'/>
             <coord lng='11' lnt='11' time='1447783311'/>        
             <coord lng='11' lnt='11' time='1447783315'/>
             <coord lng='11' lnt='11' time='1447783320'/>
