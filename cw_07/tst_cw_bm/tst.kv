@@ -1,0 +1,72 @@
+<Tst>:
+    inn: input 
+    
+    #main layout
+    BoxLayout:
+        orientation: 'vertical'
+        size: self.parent.size
+
+
+        #top layout
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 1
+
+            Button:
+                text: 'Button 1'
+                # default size_hint is 1, 1, we don't need to specify it explicitly
+                # however it's provided here to make things clear
+                size_hint: 1, 1
+
+            Button:
+                text: 'Button 2'
+                # default size_hint is 1, 1, we don't need to specify it explicitly
+                # however it's provided here to make things clear
+                size_hint: 4, 1
+
+        #bottom container layout
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 4
+
+            #left bottom layout
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+
+                Button:
+                    text: 'left bottom 1'
+                    # default size_hint is 1, 1, we don't need to specify it explicitly
+                    # however it's provided here to make things clear
+                    size_hint: 1, 1
+
+                Button:
+                    text: 'left bottom 2'
+                    # default size_hint is 1, 1, we don't need to specify it explicitly
+                    # however it's provided here to make things clear
+                    size_hint: 1, 1
+
+                Button:
+                    text: 'left bottom 3'
+                    # default size_hint is 1, 1, we don't need to specify it explicitly
+                    # however it's provided here to make things clear
+                    size_hint: 1, 1
+
+                Button:
+                    text: 'left bottom 4'
+                    # default size_hint is 1, 1, we don't need to specify it explicitly
+                    # however it's provided here to make things clear
+                    size_hint: 1, 1
+
+            #right bottom layout
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1 
+
+                TextInput:
+                    id: input
+                    text: 'Some input'
+                    color: (1, 1, 1, 0.5)
+
+                Label:
+                    text: input.text
