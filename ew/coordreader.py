@@ -51,17 +51,21 @@ class DataProvider(SuperBody):
 				
 		for i in self.coord_array:
 			self.coord_array[i].sort(key=lambda x: x[2])
-			print(self.coord_array[i])
+			#print(self.coord_array[i])
 
 
 	def make_start_time(self):
 		self.start_time = int(time())
-		
+		self.end_time = int(0)	
+
 		#перебираем каждый юнит
 		for u in self.coord_array:
 			#у каждого юнита рассматриваем геоданные
 			for i in self.coord_array[u]:
-				if int(self.start_time) > int(i[2]):
+				if self.end_time < int(i[2]):
+					self.end_time = int(i[2])
+
+				if self.start_time > int(i[2]):
 					self.start_time = int(i[2])
 			
 
@@ -99,7 +103,7 @@ class DataProvider(SuperBody):
 	#набор координат за держкой по времени 
 	#координаты привязаны к времени time
 	def coords(self, time):
-		sleep(self.time)
+		#sleep(self.time)
 
 		for u in self.coord_array:
 			#у каждого юнита рассматриваем геоданные
@@ -113,11 +117,15 @@ class DataProvider(SuperBody):
 
 	#формируем список для наблюдения в разрезе времени 
 	def coords_by_time(self):
+
+		#each key as unit name
 		for u in self.coord_array:
+			#each list coords bu unit 
 			for i in self.coord_array[u]:
+				#if current dict has no element for this second - create it
 				if i[2] not in self.coords_by_time_dict:
 					self.coords_by_time_dict[i[2]] = []
-
+				#add new coord by unit of current second
 				self.coords_by_time_dict[i[2]].append([u, i])
 					
 
@@ -128,6 +136,23 @@ class DataProvider(SuperBody):
 
 	def test(self):
 		print(self.coords_by_time_dict)
+
+	def retrospective_read(self):
+		
+		print(self.coords_by_time_dict.keys())
+
+		for i in range(self.start_time, self.end_time):
+			#print( i )
+
+			if str(i) in self.coords_by_time_dict.keys():
+				print(self.coords_by_time_dict[str(i)])
+				pass
+			else:
+				pass
+				#print('nofing new')
+			sleep(1)
+		#print(self.start_time, self.end_time)
+
 
 DP = DataProvider('first_sample_event', 1, './sample_data/sample_event0.xml')
 
@@ -142,13 +167,16 @@ DP.take_all_coords_by_event_from_xml()
 
 #make dict [unit] => [ [lnt, lng, time], [ lnt, lng, time] ]
 DP.coords_to_dict_from_xml()
+
 #time from 
 DP.make_start_time()
 
 #reader by time
 DP.coords_by_time()
 
-DP.test()
+DP.retrospective_read()
+
+#DP.test()
 #TODO end of make method
 
 #DP.take_all_coords_by_event_from_xml()
