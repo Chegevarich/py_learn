@@ -154,29 +154,22 @@ class DataProvider(SuperBody):
 		#print(self.start_time, self.end_time)
 
 
-DP = DataProvider('first_sample_event', 1, './sample_data/sample_event0.xml')
 
+if __name__ == '__main__':
 
-#TODO make method -> xml_init
+	DP = DataProvider('first_sample_event', 1, './sample_data/sample_event0.xml')
 
-#load xml from file
-DP.read_data_from_xml()
-
-#parse typical xml
-DP.take_all_coords_by_event_from_xml()
-
-#make dict [unit] => [ [lnt, lng, time], [ lnt, lng, time] ]
-DP.coords_to_dict_from_xml()
-
-#time from 
-DP.make_start_time()
-
-#reader by time
-DP.coords_by_time()
-
-DP.retrospective_read()
-
-#DP.test()
-#TODO end of make method
-
-#DP.take_all_coords_by_event_from_xml()
+	#TODO make method -> xml_init
+	#load xml from file
+	DP.read_data_from_xml()
+	#parse typical xml
+	DP.take_all_coords_by_event_from_xml()
+	#make dict [unit] => [ [lnt, lng, time], [ lnt, lng, time] ]
+	DP.coords_to_dict_from_xml()
+	#time from 
+	DP.make_start_time()
+	#reader by time
+	DP.coords_by_time()
+	DP.retrospective_read()
+	#DP.test()
+	#TODO end of make method
