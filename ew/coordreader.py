@@ -145,7 +145,7 @@ class DataProvider(SuperBody):
 			#print( i )
 
 			if str(i) in self.coords_by_time_dict.keys():
-				print(self.coords_by_time_dict[str(i)])
+				yield (self.coords_by_time_dict[str(i)])
 				pass
 			else:
 				pass
@@ -153,23 +153,32 @@ class DataProvider(SuperBody):
 			sleep(1)
 		#print(self.start_time, self.end_time)
 
-
+	def xml_full_prepare(self):
+		self.read_data_from_xml()
+		self.take_all_coords_by_event_from_xml()
+		self.coords_to_dict_from_xml()
+		self.make_start_time()
+		self.coords_by_time()
+		#self.retrospective_read()
 
 if __name__ == '__main__':
 
 	DP = DataProvider('first_sample_event', 1, './sample_data/sample_event0.xml')
+	DP.xml_full_prepare()
 
+	for i in DP.retrospective_read():
+		print(i)
 	#TODO make method -> xml_init
 	#load xml from file
-	DP.read_data_from_xml()
+	#DP.read_data_from_xml()
 	#parse typical xml
-	DP.take_all_coords_by_event_from_xml()
+	#DP.take_all_coords_by_event_from_xml()
 	#make dict [unit] => [ [lnt, lng, time], [ lnt, lng, time] ]
-	DP.coords_to_dict_from_xml()
+	#DP.coords_to_dict_from_xml()
 	#time from 
-	DP.make_start_time()
+	#DP.make_start_time()
 	#reader by time
-	DP.coords_by_time()
-	DP.retrospective_read()
+	#DP.coords_by_time()
+	#DP.retrospective_read()
 	#DP.test()
 	#TODO end of make method
