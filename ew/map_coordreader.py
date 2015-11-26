@@ -21,15 +21,49 @@ class Tst2App(App):
 	def run(self):
 		super().run()
 
+	def add_new_marker(self, lat, lon, unit_name):
+		print("add_new_marker")
+		self.units_markers[unit_name] = MapMarkerPopup(lat=float(lat),lon=float(lon))
+		self.mapview.add_marker( self.units_markers[unit_name] )
+
+
 	def pop_ups(self, *args):
-		self.mapview.add_marker(MapMarkerPopup(lat=50.4394,lon=3.017))
-		print('pop_ups')
+
+		self.gagarin.lat+=0.01
+		self.gagarin.lon+=0.01
+
+		if str(self.DP.start_time+self.iter) in self.DP.coords_by_time_dict:
+			for i in self.DP.coords_by_time_dict[str(self.DP.start_time+self.iter)]:
+
+				if self.units_markers[i[0]] == None:
+					self.add_new_marker(i[1][0], i[1][1], i[0])
+				else:
+					self.units_markers[i[0]].lat = float(i[1][0])
+					self.units_markers[i[0]].lon = float(i[1][1])
+		#TODO lear how to right 
+		self.mapview.do_update(None)
+
+		self.iter+=1
+		print('pop_ups', self.iter)
 
 	def __init__(self, DP):
+		#prepare work with data
+		self.units_markers = {}
 		self.DP = DP
+
+		#все описанные unit's in a list
+		self.units = list(self.DP.coord_array.keys())
+
+		#just prepare
+		for i in self.units:
+			self.units_markers[i] = None
+
+
 		super().__init__()
 
 	def build(self):
+
+		self.iter = 0
 
 		mainBox = BoxLayout(orientation='vertical')
 
@@ -39,18 +73,21 @@ class Tst2App(App):
 		self.mapview.lat = 50.6394
 		self.mapview.lon = 3.057
 		self.mapview.zoom = 13
+
 		self.mapview.map_source = MapSource(sys.argv[1], attribution="") if len(sys.argv) > 1 else "osm"
 
 		mainBox.add_widget(self.mapview)
 
-		self.mapview.add_marker(MapMarkerPopup(lat=50.6394,lon=3.057))
+		#dirty learn :()
+		#print( dir(self.mapview) )
+
+		self.gagarin = MapMarkerPopup(lat=50.6394,lon=3.057)
+		self.mapview.add_marker( self.gagarin )
 		#self.mapview.add_marker(MapMarkerPopup(lat=50.4394,lon=3.017))
 
 		#mapmarkerpopup = MapMarkerPopup()
 
-		if self.i < 5:
-			self.i+=1
-			Clock.schedule_interval(self.pop_ups, 1)
+		Clock.schedule_interval(self.pop_ups, 1)
 
 		return mainBox
 

@@ -31,8 +31,8 @@ class DataProvider(SuperBody):
 				event = e
 
 		#если получили эвент - запоминаем эвент
-		if e:
-			self.event_data = e
+		if event:
+			self.event_data = event
 		else:
 			return False
 
@@ -53,6 +53,9 @@ class DataProvider(SuperBody):
 			self.coord_array[i].sort(key=lambda x: x[2])
 			#print(self.coord_array[i])
 
+	#TODO deside - need it or not
+	def find_start_point_for_each_unit():
+		pass
 
 	def make_start_time(self):
 		self.start_time = int(time())
@@ -139,7 +142,7 @@ class DataProvider(SuperBody):
 
 	def retrospective_read(self):
 		
-		print(self.coords_by_time_dict.keys())
+		#print(self.coords_by_time_dict.keys())
 
 		for i in range(self.start_time, self.end_time):
 			#print( i )
