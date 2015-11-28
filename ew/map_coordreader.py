@@ -13,18 +13,45 @@ from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.garden.mapview import MapView, MapSource, MapMarkerPopup
+from kivy.uix.bubble import Bubble
 
 class Tst2App(App):
 
 	i = 0
 
-	def run(self):
-		super().run()
-
 	def add_new_marker(self, lat, lon, unit_name):
 		print("add_new_marker")
 		self.units_markers[unit_name] = MapMarkerPopup(lat=float(lat),lon=float(lon))
+		self.units_markers[unit_name].popup_size = ( 230, 130 )
+
+		buble = Bubble()
+
+		box = BoxLayout(orientation="horizontal", padding="5px")#.add_widget(Label(text=unit_name))
+		box.add_widget(AsyncImage(source="http://cs618620.vk.me/v618620602/1a4b3/-A6cSynXWf0.jpg", mipmap=True))
+		box.add_widget(Label(text=unit_name, markup=True, halign="center"))
+
+		buble.add_widget(box)
+
+		self.units_markers[unit_name].add_widget(buble)
+
 		self.mapview.add_marker( self.units_markers[unit_name] )
+		self.mapview.do_update(None)
+		'''
+		Bubble:
+		    BoxLayout:
+		        orientation: "horizontal"
+		        padding: "5dp"
+		        AsyncImage:
+		            source: "http://upload.wikimedia.org/wikipedia/commons/9/9d/France-Lille-VieilleBourse-FacadeGrandPlace.jpg"
+		            mipmap: True
+		        Label:
+		            text: "[b]Lille[/b]\\n1 154 861 hab\\n5 759 hab./km2"
+		            markup: True
+		            halign: "center"			
+		'''
+
+		#buble.add_widget(self.units_markers[unit_name])
+		#self.units_markers[unit_name].add_widget(buble)
 
 
 	def pop_ups(self, *args):
@@ -70,8 +97,8 @@ class Tst2App(App):
 		
 		#mainBox.add_widget(map_source)
 		self.mapview = MapView()
-		self.mapview.lat = 50.6394
-		self.mapview.lon = 3.057
+		self.mapview.lat = 11
+		self.mapview.lon = 11
 		self.mapview.zoom = 13
 
 		self.mapview.map_source = MapSource(sys.argv[1], attribution="") if len(sys.argv) > 1 else "osm"
