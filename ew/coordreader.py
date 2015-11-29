@@ -57,20 +57,35 @@ class DataProvider(SuperBody):
 	def find_start_point_for_each_unit():
 		pass
 
+	def find_center(self):
+		pass
+
 	def make_start_time(self):
 		self.start_time = int(time())
 		self.end_time = int(0)	
+
+		list_of_lat = []
+		list_of_lng = []
 
 		#перебираем каждый юнит
 		for u in self.coord_array:
 			#у каждого юнита рассматриваем геоданные
 			for i in self.coord_array[u]:
+
+				list_of_lat.append(i[1])
+				list_of_lng.append(i[0])
+
 				if self.end_time < int(i[2]):
 					self.end_time = int(i[2])
 
 				if self.start_time > int(i[2]):
 					self.start_time = int(i[2])
-			
+
+		list_of_lat.sort()
+		list_of_lng.sort()
+
+		self.center_lat = list_of_lat[int(len(list_of_lat)/2)]
+		self.center_lng = list_of_lng[int(len(list_of_lng)/2)]
 
 	#сбор всех координат в единую переменную 
 	#координаты стоит вернуть следующим форматом

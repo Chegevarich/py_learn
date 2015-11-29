@@ -56,8 +56,8 @@ class Tst2App(App):
 
 	def pop_ups(self, *args):
 
-		self.gagarin.lat+=0.01
-		self.gagarin.lon+=0.01
+		#self.gagarin.lat+=0.01
+		#self.gagarin.lon+=0.01
 
 		if str(self.DP.start_time+self.iter) in self.DP.coords_by_time_dict:
 			for i in self.DP.coords_by_time_dict[str(self.DP.start_time+self.iter)]:
@@ -76,6 +76,7 @@ class Tst2App(App):
 	def __init__(self, DP):
 		#prepare work with data
 		self.units_markers = {}
+
 		self.DP = DP
 
 		#все описанные unit's in a list
@@ -84,7 +85,6 @@ class Tst2App(App):
 		#just prepare
 		for i in self.units:
 			self.units_markers[i] = None
-
 
 		super().__init__()
 
@@ -97,9 +97,9 @@ class Tst2App(App):
 		
 		#mainBox.add_widget(map_source)
 		self.mapview = MapView()
-		self.mapview.lat = 11
-		self.mapview.lon = 11
-		self.mapview.zoom = 13
+		self.mapview.lat = self.DP.center_lat
+		self.mapview.lon = self.DP.center_lng
+		self.mapview.zoom = 5
 
 		self.mapview.map_source = MapSource(sys.argv[1], attribution="") if len(sys.argv) > 1 else "osm"
 
@@ -108,8 +108,8 @@ class Tst2App(App):
 		#dirty learn :()
 		#print( dir(self.mapview) )
 
-		self.gagarin = MapMarkerPopup(lat=50.6394,lon=3.057)
-		self.mapview.add_marker( self.gagarin )
+		#self.gagarin = MapMarkerPopup(lat=50.6394,lon=3.057)
+		#self.mapview.add_marker( self.gagarin )
 		#self.mapview.add_marker(MapMarkerPopup(lat=50.4394,lon=3.017))
 
 		#mapmarkerpopup = MapMarkerPopup()
