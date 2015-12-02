@@ -36,22 +36,6 @@ class Tst2App(App):
 
 		self.mapview.add_marker( self.units_markers[unit_name] )
 		self.mapview.do_update(None)
-		'''
-		Bubble:
-		    BoxLayout:
-		        orientation: "horizontal"
-		        padding: "5dp"
-		        AsyncImage:
-		            source: "http://upload.wikimedia.org/wikipedia/commons/9/9d/France-Lille-VieilleBourse-FacadeGrandPlace.jpg"
-		            mipmap: True
-		        Label:
-		            text: "[b]Lille[/b]\\n1 154 861 hab\\n5 759 hab./km2"
-		            markup: True
-		            halign: "center"			
-		'''
-
-		#buble.add_widget(self.units_markers[unit_name])
-		#self.units_markers[unit_name].add_widget(buble)
 
 
 	def pop_ups(self, *args):
@@ -131,7 +115,7 @@ class Tst2App(App):
 			return box
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
 	DP = DataProvider('first_sample_event', 1, './sample_data/sample_event0.xml')
 	DP.xml_full_prepare()
 
